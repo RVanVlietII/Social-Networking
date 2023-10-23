@@ -49,7 +49,8 @@ const ThoughtSchema = new mongoose.Schema({
     },
     username: { 
         type: String, 
-        required: true },
+        required: true 
+    },
     reactions: [ReactionSchema]
     },
 

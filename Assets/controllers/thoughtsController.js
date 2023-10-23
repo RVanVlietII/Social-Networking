@@ -1,18 +1,18 @@
-const { User, Thought } = require('../models');
+const { User, Thoughts } = require('../models');
 
-const thoughtController = {
+const thoughtsController = {
   // /api/thoughts
 
   // get all thoughts
-  getAllThought(req, res) {
-    Thought.find({})
+  getAllThoughts(req, res) {
+    Thoughts.find({})
       .populate({
         path: 'reactions',
         select: '-__v'
       })
       .select('-__v')
       .sort({ _id: -1 })
-      .then(dbThoughtData => res.json(dbThoughtData))
+      .then(dbThoughtsData => res.json(dbThoughtsData))
       .catch(err => {
         console.log(err);
         res.sendStatus(400);
@@ -20,16 +20,16 @@ const thoughtController = {
   },
 
   // get one thoughts by id
-  getThoughtById({ params }, res) {
-    Thought.findOne({ _id: params.id })
+  getThoughtsById({ params }, res) {
+    Thoughts.findOne({ _id: params.id })
       .populate({
         path: 'reactions',
         select: '-__v'
       })
       .select('-__v')
       .sort({ _id: -1 })
-      .then(dbThoughtData => {
-        if (!dbThoughtData) {
+      .then(dbThoughtsData => {
+        if (!dbThoughtsData) {
           res.status(404).json({ 
             message: 'No thoughts found with that id!' 
           });
@@ -39,12 +39,15 @@ const thoughtController = {
       })
       .catch(err => {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(400).json({
+          error: "Bad Request",
+          message: "The request couldn't be processed due to client error"
+        });
       });
   },
 
-  createThought({ body }, res) {
-    Thought.create(body)
+  createThoughts({ body }, res) {
+    Thoughts.create(body)
         .then(({ _id }) => {
             return User.findOneAndUpdate(
                 { _id: body.userId },
@@ -52,38 +55,38 @@ const thoughtController = {
                 { new: true }
             );
         })
-        .then(dbThoughtData => {
-            if (!dbThoughtData) {
+        .then(dbThoughtsData => {
+            if (!dbThoughtsData) {
                 res.status(404).json({ 
                   message: 'No user found with this id!' 
                 });
                 return;
             }
-            res.json(dbThoughtData);
+            res.json(dbThoughtsData);
         })
         .catch(err => res.json(err));
 },
 
   // update Thought by id
-  updateThought({ params, body }, res) {
-    Thought.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
-      .then(dbThoughtData => {
-        if (!dbThoughtData) {
+  updateThoughts({ params, body }, res) {
+    Thoughts.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+      .then(dbThoughtsData => {
+        if (!dbThoughtsData) {
           res.status(404).json({ 
             message: 'No thoughts found with that id!' 
           });
           return;
         }
-        res.json(dbThoughtData);
+        res.json(dbThoughtsData);
       })
       .catch(err => res.json(err));
   },
 
   // delete thought by ID
-  deleteThought({ params }, res) {
-    Thought.findOneAndDelete({ _id: params.id })
-      .then(dbThoughtData => {
-        if (!dbThoughtData) {
+  deleteThoughts({ params }, res) {
+    Thoughts.findOneAndDelete({ _id: params.id })
+      .then(dbThoughtsData => {
+        if (!dbThoughtsData) {
           res.status(404).json({ 
             message: 'No thoughts found with that id!' 
           });
@@ -108,38 +111,41 @@ const thoughtController = {
   },
 
   createReaction({params, body}, res) {
-    Thought.findOneAndUpdate(
-      {_id: params.thoughtId}, 
+    Thoughts.findOneAndUpdate(
+      {_id: params.thoughtsId}, 
       {$push: {reactions: body}}, 
       {new: true, runValidators: true})
     .populate({path: 'reactions', select: '-__v'})
     .select('-__v')
-    .then(dbThoughtData => {
-        if (!dbThoughtData) {
+    .then(dbThoughtsData => {
+        if (!dbThoughtsData) {
             res.status(404).json({
               message: 'No thoughts with this ID.'
             });
             return;
         }
-        res.json(dbThoughtData);
+        res.json(dbThoughtsData);
     })
-    .catch(err => res.status(400).json(err))
+    .catch(err => res.status(400).json({
+      error: "Bad Request",
+      message: "The request could not be processed due to client errors."
+  }))
 },
 
   deleteReaction({ params }, res) {
-    Thought.findOneAndUpdate(
-      { _id: params.thoughtId },
+    Thoughts.findOneAndUpdate(
+      { _id: params.thoughtsId },
       { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }
     )
-      .then(dbThoughtData => {
-        if (!dbThoughtData) {
+      .then(dbThoughtsData => {
+        if (!dbThoughtsData) {
           res.status(404).json({ 
             message: 'Nope!'
           });
           return;
         }
-       res.json(dbThoughtData);
+       res.json(dbThoughtsData);
       })
       .catch(err => res.json(err));
   }
@@ -147,4 +153,4 @@ const thoughtController = {
 
 };
 
-module.exports = thoughtController
+module.exports = thoughtsController
