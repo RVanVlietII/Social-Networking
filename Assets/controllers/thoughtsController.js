@@ -15,7 +15,9 @@ const thoughtsController = {
       .then(dbThoughtsData => res.json(dbThoughtsData))
       .catch(err => {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(400).json({
+          message: 'Thoughts not working correctly'
+        });
       });
   },
 
@@ -35,7 +37,7 @@ const thoughtsController = {
           });
           return;
         }
-        res.json(dbThoughtData);
+        res.json(dbThoughtsData);
       })
       .catch(err => {
         console.log(err);
@@ -93,7 +95,7 @@ const thoughtsController = {
           return;
         }
         return User.findOneAndUpdate(
-          { _id: parmas.userId },
+          { _id: params.userId },
           { $pull: { thoughts: params.Id } },
           { new: true }
         )

@@ -10,7 +10,9 @@ const userController = {
       .then(dbUserData => res.json(dbUserData))
       .catch(err => {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(400).json({
+          message: 'No users found'
+        });
       });
   },
 
@@ -44,7 +46,9 @@ const userController = {
   createUser({ body }, res) {
     User.create(body)
       .then(dbUserData => res.json(dbUserData))
-      .catch(err => res.json(err));
+      .catch(err => res.json({
+        message: 'no User created'
+      }));
   },
 
   // update User by id
@@ -59,12 +63,14 @@ const userController = {
         }
         res.json(dbUserData);
       })
-      .catch(err => res.json(err));
+      .catch(err => res.json({
+        message: 'unable to update user correctly'
+      }));
   },
 
   //Delete user and users associated thoughts
   deleteUser({ params }, res) {
-    Thought.deleteMany({ userId: params.id })
+    Thoughts.deleteMany({ userId: params.id })
       .then(() => {
         User.findOneAndDelete({ userId: params.id })
           .then(dbUserData => {
@@ -77,7 +83,9 @@ const userController = {
             res.json(dbUserData);
           });
       })
-      .catch(err => res.json(err));
+      .catch(err => res.json({
+        message: 'unable to delete user'
+      }));
   },
 
   // /api/users/:userid/fiends/:friendId
