@@ -1,11 +1,13 @@
 const userRoutes = require('express').Router();
 
 const {
-  getAllUser,
+  getUser,
   getUserById,
   createUser,
-  updateUser, //post
-  deleteUser, //delete
+  updateUser, 
+  deleteUser,
+  createThought,
+  deleteThought,
   addFriend,
   deleteFriend,
 } = require('../../controllers/userController');
@@ -13,7 +15,7 @@ const {
 // /api/users
 userRoutes
   .route('/')
-  .get(getAllUser)
+  .get(getUser)
   .post(createUser);
 
 // /api/users/:userId
@@ -24,14 +26,14 @@ userRoutes
   .delete(deleteUser);
 
 // /api/users/:userId/thoughts
-// router
-//   .route('/:userId/thoughts')
-//   .post(createThoughts);
+userRoutes
+  .route(':userId/thoughts')
+  .post(createThought);
 
 // /api/users/:userId/thoughts/:thoughtsId
-// router
-//   .route('/:userId/thoughts/:Id')
-//   .delete(removeThoughts);
+userRoutes
+  .route('/:userId/thoughts/:Id')
+  .delete(deleteThought);
 
 // /api/users/:userId/friends/:friendId
 userRoutes

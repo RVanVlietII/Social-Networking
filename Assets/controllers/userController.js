@@ -3,7 +3,7 @@ const { User, Thoughts } = require('../models');
 const userController = {
   // /api/users
   // get all users
-  getAllUser(req, res) {
+  getUser(req, res) {
     User.find({})
       .select('-__v')
       .sort({ _id: -1 })
@@ -70,25 +70,79 @@ const userController = {
 
   //Delete user and users associated thoughts
   deleteUser({ params }, res) {
-    Thoughts.deleteMany({ userId: params.id })
-      .then(() => {
-        User.findOneAndDelete({ userId: params.id })
-          .then(dbUserData => {
-            if (!dbUserData) {
-              res.status(404).json({ 
-                message: 'No User found with this id!' 
-              });
-              return;
-            }
-            res.json(dbUserData);
+    User.findOne({ _id: params.id })
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        res.status(404).json({ 
+          message: 'No User found with this id!' 
+        });
+        return;
+      }
+
+      // Now, delete the associated thoughts
+      return Thoughts.deleteMany({ userId: params.id })
+        .then(() => {
+          // Finally, delete the user
+          return User.findOneAndDelete({ _id: params.id });
+        });
+    })
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        res.status(404).json({ 
+          message: 'No User found with this id!' 
+        });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch((err) => res.status(400).json({
+      message: 'Unable to delete user'
+    }));
+},
+  createThought({ params, body }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { thoughts: body } },
+      { new: true }
+    )
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res.status(404).json({ 
+            message: 'No user found with this id' 
           });
+          return;
+        }
+        res.json(dbUserData);
       })
-      .catch(err => res.json({
-        message: 'unable to delete user'
+      .catch((err) => res.status(400).json({
+        error: "Bad Request",
+        message: "The request could not be processed due to client errors."
       }));
   },
 
-  // /api/users/:userid/fiends/:friendId
+  // Delete a thought for a user
+  deleteThought({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { thoughts: { _id: params.thoughtId } } },
+      { new: true }
+    )
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res.status(404).json({ 
+            message: 'No user found with this id' 
+          });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.status(400).json({
+        error: "Bad Request",
+        message: "The request could not be processed due to client errors."
+      }));
+  },
+
+  // /api/users/:userid/friends/:friendId
   addFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
@@ -104,11 +158,15 @@ const userController = {
         }
         res.json(dbUserData);
       })
-      .catch((err) => res.status(400).json({
-        error: "Bad Request",
-        message: "The request could not be processed due to client errors."
-  }));
+      .catch((err) => {
+        res.status(400).json({
+          error: "Bad Request",
+          message: "The request could not be processed due to client errors."
+      })
+    });
   },
+  
+  
 
   deleteFriend({ params }, res) {
     User.findOneAndUpdate(
@@ -128,8 +186,7 @@ const userController = {
       .catch((err) => res.status(400).json({
         error: "Bad Request",
         message: "The request could not be processed due to client errors."
-  }));
-},
-};
+      }));
+    }};
 
 module.exports = userController;
