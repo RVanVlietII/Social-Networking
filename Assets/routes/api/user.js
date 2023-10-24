@@ -27,7 +27,7 @@ userRoutes
 
 // /api/users/:userId/thoughts
 userRoutes
-  .route(':userId/thoughts')
+  .route('/:userId/thoughts')
   .post(createThought);
 
 // /api/users/:userId/thoughts/:thoughtsId
