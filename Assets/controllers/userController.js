@@ -100,7 +100,7 @@ const userController = {
     }));
 },
   createThought({ params, body }, res) {
-    User.findOneAndUpdate(
+    Thoughts.findOneAndUpdate(
       { _id: params.user_Id },
       { $push: { thoughts: body } },
       { new: true }
@@ -114,10 +114,12 @@ const userController = {
         }
         res.json(dbUserData);
       })
-      .catch((err) => res.status(400).json({
+      .catch((err) => {
+        console.error(err);
+        res.status(400).json({
         error: "Bad Request",
         message: "The request could not be processed due to client errors."
-      }));
+      })});
   },
 
   // Delete a thought for a user
