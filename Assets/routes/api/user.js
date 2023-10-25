@@ -25,10 +25,10 @@ userRoutes
   .put(updateUser)
   .delete(deleteUser);
 
-// /api/users/:userId/thoughts
-userRoutes
-  .route('/:user_Id/thoughts')
-  .post(createThought);
+// // /api/users/:userId/thoughts
+// userRoutes
+//   .route('/:user_Id/thoughts')
+//   .post(createThought);
 
 // /api/users/:userId/thoughts/:thoughtsId
 userRoutes
@@ -37,7 +37,7 @@ userRoutes
 
 // /api/users/:userId/friends/:friendId
 userRoutes
-  .route('/:user_Id/friends/:friend_Id')
+  .route('/:user_Id/friends')
   .post(addFriend)
   .delete(deleteFriend);
 
