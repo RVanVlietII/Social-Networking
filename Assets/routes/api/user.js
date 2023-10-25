@@ -12,13 +12,13 @@ const {
   deleteFriend,
 } = require('../../controllers/userController');
 
-// /api/users
+// /api/users (good to go)
 userRoutes
   .route('/')
   .get(getUser)
   .post(createUser);
 
-// /api/users/:userId
+// /api/users/:userId (good to go)
 userRoutes
   .route('/:user_Id')
   .get(getUserById)
