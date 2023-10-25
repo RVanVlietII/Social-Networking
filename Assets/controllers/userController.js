@@ -18,7 +18,7 @@ const userController = {
 
   // get one User by id
   getUserById({ params }, res) {
-    User.findOne({ _id: params.id })
+    User.findOne({ _id: params.user_Id })
       .populate({
         path: 'thoughts',
         select: '-__v'
@@ -47,13 +47,13 @@ const userController = {
     User.create(body)
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json({
-        message: 'no User created'
+        message: 'no User created',
       }));
   },
 
   // update User by id
   updateUser({ params, body }, res) {
-    User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+    User.findOneAndUpdate({ _id: params.userId }, body, { new: true, runValidators: true })
       .then(dbUserData => {
         if (!dbUserData) {
           res.status(404).json({ 
@@ -70,7 +70,7 @@ const userController = {
 
   //Delete user and users associated thoughts
   deleteUser({ params }, res) {
-    User.findOne({ _id: params.id })
+    User.findOne({ _id: params.userId })
     .then((dbUserData) => {
       if (!dbUserData) {
         res.status(404).json({ 
@@ -80,10 +80,10 @@ const userController = {
       }
 
       // Now, delete the associated thoughts
-      return Thoughts.deleteMany({ userId: params.id })
+      return Thoughts.deleteMany({ userId: params.userId })
         .then(() => {
           // Finally, delete the user
-          return User.findOneAndDelete({ _id: params.id });
+          return User.findOneAndDelete({ _id: params.userId });
         });
     })
     .then((dbUserData) => {
@@ -124,7 +124,7 @@ const userController = {
   deleteThought({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
-      { $pull: { thoughts: { _id: params.thoughtId } } },
+      { $pull: { thoughts: { _id: params.thoughtsId } } },
       { new: true }
     )
       .then((dbUserData) => {

@@ -23,7 +23,7 @@ const thoughtsController = {
 
   // get one thoughts by id
   getThoughtsById({ params }, res) {
-    Thoughts.findOne({ _id: params.id })
+    Thoughts.findOne({ _id: params.thoughts_Id })
       .populate({
         path: 'reactions',
         select: '-__v'
@@ -52,7 +52,7 @@ const thoughtsController = {
     Thoughts.create(body)
         .then(({ _id }) => {
             return User.findOneAndUpdate(
-                { _id: body.userId },
+                { _id: body.user_Id },
                 { $push: { thoughts: _id } },
                 { new: true }
             );
@@ -71,7 +71,7 @@ const thoughtsController = {
 
   // update Thought by id
   updateThoughts({ params, body }, res) {
-    Thoughts.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+    Thoughts.findOneAndUpdate({ _id: params.thoughtsId }, body, { new: true, runValidators: true })
       .then(dbThoughtsData => {
         if (!dbThoughtsData) {
           res.status(404).json({ 

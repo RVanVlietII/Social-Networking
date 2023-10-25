@@ -20,7 +20,7 @@ userRoutes
 
 // /api/users/:userId
 userRoutes
-  .route('/:userId')
+  .route('/:user_Id')
   .get(getUserById)
   .put(updateUser)
   .delete(deleteUser);

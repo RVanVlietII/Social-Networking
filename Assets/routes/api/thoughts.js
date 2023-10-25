@@ -16,7 +16,7 @@ thoughtRoutes
     .post(createThoughts);
 
 thoughtRoutes
-    .route('/:id')
+    .route('/:thoughts_Id')
     .get(getThoughtsById)
     .put(updateThoughts)
     .delete(deleteThoughts);
