@@ -100,7 +100,7 @@ const userController = {
     }));
 },
   createThought({ params, body }, res) {
-    Thoughts.findOneAndUpdate(
+   User.findOneAndUpdate(
       { _id: params.user_Id },
       { $push: { thoughts: body } },
       { new: true }
