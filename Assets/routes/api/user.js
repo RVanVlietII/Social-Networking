@@ -27,17 +27,17 @@ userRoutes
 
 // /api/users/:userId/thoughts
 userRoutes
-  .route('/:userId/thoughts')
+  .route('/:user_Id/thoughts')
   .post(createThought);
 
 // /api/users/:userId/thoughts/:thoughtsId
 userRoutes
-  .route('/:userId/thoughts/:Id')
+  .route('/:user_Id/thoughts/:thoughts_Id')
   .delete(deleteThought);
 
 // /api/users/:userId/friends/:friendId
 userRoutes
-  .route('/:userId/friends/:friendId')
+  .route('/:user_Id/friends/:friend_Id')
   .post(addFriend)
   .delete(deleteFriend);
 

@@ -53,7 +53,7 @@ const userController = {
 
   // update User by id
   updateUser({ params, body }, res) {
-    User.findOneAndUpdate({ _id: params.userId }, body, { new: true, runValidators: true })
+    User.findOneAndUpdate({ _id: params.user_Id }, body, { new: true, runValidators: true })
       .then(dbUserData => {
         if (!dbUserData) {
           res.status(404).json({ 
@@ -70,7 +70,7 @@ const userController = {
 
   //Delete user and users associated thoughts
   deleteUser({ params }, res) {
-    User.findOne({ _id: params.userId })
+    User.findOne({ _id: params.user_Id })
     .then((dbUserData) => {
       if (!dbUserData) {
         res.status(404).json({ 
@@ -80,10 +80,10 @@ const userController = {
       }
 
       // Now, delete the associated thoughts
-      return Thoughts.deleteMany({ userId: params.userId })
+      return Thoughts.deleteMany({ userId: params.user_Id })
         .then(() => {
           // Finally, delete the user
-          return User.findOneAndDelete({ _id: params.userId });
+          return User.findOneAndDelete({ _id: params.user_Id });
         });
     })
     .then((dbUserData) => {
@@ -124,7 +124,7 @@ const userController = {
   deleteThought({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
-      { $pull: { thoughts: { _id: params.thoughtsId } } },
+      { $pull: { thoughts: { _id: params.thoughts_Id } } },
       { new: true }
     )
       .then((dbUserData) => {
@@ -146,7 +146,7 @@ const userController = {
   addFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
-      { $push: { friends: params.friendId } },
+      { $push: { friends: params.friend_Id } },
       { new: true }
     )
       .then((dbUserData) => {
@@ -171,7 +171,7 @@ const userController = {
   deleteFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
-      { $pull: { friends: params.friendId } },
+      { $pull: { friends: params.friend_Id } },
       { new: true }
     )
       .then((dbUserData) => {

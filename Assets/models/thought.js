@@ -1,4 +1,5 @@
 const { Schema, model} = require('mongoose');
+const moment = require('moment');
 
 const ReactionSchema = new Schema({
     reactionId: { 
@@ -56,8 +57,10 @@ const ThoughtSchema = new Schema({
 
 );
 
-// { type: mongoose.Schema.Types.ObjectId, ref: 'Reaction'}
-ThoughtSchema.virtual('reactionCount').get(() => {
+
+ThoughtSchema
+    .virtual('reactionCount')
+    .get(function() {
     return this.reactions.length;  
 });
 
