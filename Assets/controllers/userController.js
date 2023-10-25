@@ -101,7 +101,7 @@ const userController = {
 },
   createThought({ params, body }, res) {
     User.findOneAndUpdate(
-      { _id: params.userId },
+      { _id: params.user_Id },
       { $push: { thoughts: body } },
       { new: true }
     )
@@ -123,7 +123,7 @@ const userController = {
   // Delete a thought for a user
   deleteThought({ params }, res) {
     User.findOneAndUpdate(
-      { _id: params.userId },
+      { _id: params.user_Id },
       { $pull: { thoughts: { _id: params.thoughts_Id } } },
       { new: true }
     )
@@ -145,7 +145,7 @@ const userController = {
   // /api/users/:userid/friends/:friendId
   addFriend({ params }, res) {
     User.findOneAndUpdate(
-      { _id: params.userId },
+      { _id: params.user_Id },
       { $push: { friends: params.friend_Id } },
       { new: true }
     )
@@ -170,7 +170,7 @@ const userController = {
 
   deleteFriend({ params }, res) {
     User.findOneAndUpdate(
-      { _id: params.userId },
+      { _id: params.user_Id },
       { $pull: { friends: params.friend_Id } },
       { new: true }
     )
