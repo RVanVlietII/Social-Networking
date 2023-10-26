@@ -37,7 +37,7 @@ userRoutes
 
 // /api/users/:userId/friends/:friendId
 userRoutes
-  .route('/:user_Id/friends')
+  .route('/:user_Id/friends/:friend_Id')
   .post(addFriend)
   .delete(deleteFriend);
 

@@ -20,7 +20,9 @@ const userSchema = new Schema({
     friends: [{ 
         type: Schema.Types.ObjectId, 
         ref: 'User', 
-    }],
+            
+    }]
+    
 });
 
 userSchema
@@ -28,6 +30,14 @@ userSchema
     .get(function(){
     return this.friends.length;
 });
+
+// Set the 'toJSON' option to include virtuals and getters
+userSchema
+    .set('toJSON', { virtuals: true, getters: true });
+
+// Omit the '_id' field from the JSON representation
+userSchema
+    .set('toObject', { getters: true, virtuals: true });
 
 const User = model('User', userSchema);
 
