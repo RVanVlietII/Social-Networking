@@ -1,4 +1,4 @@
-# 18 NoSQL: Social Network API
+# Social-Networking
 
 ## Description
 
@@ -54,7 +54,7 @@ DELETE: `http://localhost:3001/api/thoughts/:thought_Id/reactions/:reaction_Id`
 
 ## Video WalkThrough
 
-Video URL: ` `
+Video URL: `https://drive.google.com/file/d/11rATv25cqaZ7SOPrLRvNsudy8m78mx7F/view`
 
 Credit: 
 1) BCS Assistants
