@@ -4,8 +4,6 @@
 
 This is a backend application utilized to transfer data through the use of MongoDB as the database source. Similar to how facebook works, this app works to show the back end transfer. Create your own data using objects and the proper routes as described below to see users created, user-thoughts and reactions to the thoughts. A video below walks you through how to do that. 
 
-Because this application won’t be deployed, you’ll also need to create a walkthrough video that demonstrates its functionality and all of the following acceptance criteria being met. You’ll need to submit a link to the video and add it to the README of your project.
-
 ## Installation
 1. `npm install`
 - This will install the packages as listed on the package.json file. 
