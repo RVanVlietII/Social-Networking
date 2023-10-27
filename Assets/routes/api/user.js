@@ -12,30 +12,30 @@ const {
   deleteFriend,
 } = require('../../controllers/userController');
 
-// /api/users (good to go)
+// /api/user (good to go)
 userRoutes
   .route('/')
   .get(getUser)
   .post(createUser);
 
-// /api/users/:userId (good to go)
+// /api/user/:userId (good to go)
 userRoutes
   .route('/:user_Id')
   .get(getUserById)
   .put(updateUser)
   .delete(deleteUser);
 
-// // /api/users/:userId/thoughts
+// // /api/user/:userId/thoughts
 // userRoutes
 //   .route('/:user_Id/thoughts')
 //   .post(createThought);
 
-// /api/users/:userId/thoughts/:thoughtsId (works)
+// /api/user/:userId/thoughts/:thoughtsId (works)
 userRoutes
   .route('/:user_Id/thoughts/:thoughts_Id')
   .delete(deleteThought);
 
-// /api/users/:userId/friends/:friendId (works)
+// /api/user/:userId/friends/:friendId (works)
 userRoutes
   .route('/:user_Id/friends/:friend_Id')
   .post(addFriend)
