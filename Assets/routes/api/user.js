@@ -30,12 +30,12 @@ userRoutes
 //   .route('/:user_Id/thoughts')
 //   .post(createThought);
 
-// /api/users/:userId/thoughts/:thoughtsId
+// /api/users/:userId/thoughts/:thoughtsId (works)
 userRoutes
   .route('/:user_Id/thoughts/:thoughts_Id')
   .delete(deleteThought);
 
-// /api/users/:userId/friends/:friendId
+// /api/users/:userId/friends/:friendId (works)
 userRoutes
   .route('/:user_Id/friends/:friend_Id')
   .post(addFriend)

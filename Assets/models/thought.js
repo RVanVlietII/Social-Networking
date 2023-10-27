@@ -55,13 +55,18 @@ const ThoughtSchema = new Schema({
                 getters: true
             },
             id: false,
+            toObject: {
+                getters: true,
+                virtuals: true
+            }
         },
 
 );
 
 // { type: mongoose.Schema.Types.ObjectId, ref: 'Reaction'}
-ThoughtSchema.virtual('reactionCount')
-.get(function() {
+ThoughtSchema
+    .virtual('reactionCount')
+    .get(function() {
     return this.reactions.length;  
 });
 

@@ -10,12 +10,12 @@ const {
     deleteReaction
 } = require('../../controllers/thoughtsController');
 
-thoughtRoutes
+thoughtRoutes //working-ish
     .route('/')
     .get(getAllThoughts)
     .post(createThoughts);
 
-thoughtRoutes
+thoughtRoutes //works but need to find out why its a 404 response
     .route('/:thoughts_Id')
     .get(getThoughtsById)
     .put(updateThoughts)

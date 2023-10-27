@@ -49,22 +49,42 @@ const thoughtsController = {
   },
 
   createThoughts({ body }, res) {
+    // Thoughts.create(body)
+    //     .then(({ _id }) => {
+    //         return User.findOneAndUpdate(
+    //             { _id: body.user_Id },
+    //             { $push: { thoughts: _id } },
+    //             { new: true }
+    //         );
+    //     })
+    //     .then(dbThoughtsData => {
+          
+    //         if (!dbThoughtsData) {
+    //             res.status(404).json({ 
+    //               message: 'No user found with this id!' 
+    //             });
+    //             return;
+    //         }
+    //         res.status(200).json(dbThoughtsData);
+    //     })
+    //     .catch(err => res.json(err));
     Thoughts.create(body)
         .then(({ _id }) => {
-            return User.findOneAndUpdate(
+            const dbThoughtsData = User.findOneAndUpdate(
                 { _id: body.user_Id },
                 { $push: { thoughts: _id } },
                 { new: true }
             );
-        })
-        .then(dbThoughtsData => {
+            
             if (!dbThoughtsData) {
                 res.status(404).json({ 
                   message: 'No user found with this id!' 
                 });
                 return;
             }
-            res.json(dbThoughtsData);
+
+            res.status(200).json(dbThoughtsData);
+     
         })
         .catch(err => res.json(err));
 },
@@ -115,7 +135,7 @@ const thoughtsController = {
   createReaction({params, body}, res) {
     Thoughts.findOneAndUpdate(
       {_id: params.thoughts_Id}, 
-      {$push: {reactions: body}}, 
+      {$addToSet: {reactions: body}}, 
       {new: true, runValidators: true})
     .populate({path: 'reactions', select: '-__v'})
     .select('-__v')
@@ -128,10 +148,12 @@ const thoughtsController = {
         }
         res.json(dbThoughtsData);
     })
-    .catch(err => res.status(400).json({
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({
       error: "Bad Request",
       message: "The request could not be processed due to client errors."
-  }))
+  })})
 },
 
   deleteReaction({ params }, res) {
